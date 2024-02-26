@@ -4,39 +4,67 @@
 
 const CRATE_URL = 'https://raw.githubusercontent.com/Sydney-Informatics-Hub/Heurist-Integration/main/ro-crates/OMAA/ro-crate-metadata.json';
 
-const {ROCrate} = require('ro-crate');
+import {ROCrate} from 'ro-crate';
 
 const response = await fetch(CRATE_URL);
 if( !response.ok ) {
-	thrown new Error(`fetch failed: ${response.status}`);
+	throw new Error(`fetch failed: ${response.status}`);
 }
 
 const crateJson = await response.json();
 const crate = new ROCrate(crateJson);
 
-const nodes = [];
-const links = [];
 const types = [];
+const relations = [];
 
-function typeId(type) {
-	const i = types.findIndex((t) => t === type);
+function makeId(collection, thing) {
+	const i = collection.findIndex((t) => t === thing);
 	if( i === -1 ) {
-		types.push(type);
-		return types.length - 1; 
+		collection.push(thing);
+		return collection.length - 1; 
 	}
 	return i;
 }
 
+function asArray(value) {
+	if( Array.isArray(value) ) {
+		return value;
+	}
+	return [ value ];
+}
 
+// build a list of nodes
 
-crate.graph.map((e) => {
-	const t = typeId(e['@type']);
-	nodes.push({
+const nodes = crate.graph.map((e) => {
+	const t = makeId(types, e['@type']);
+	return {
 		id: e['@id'],
 		group: t,
 		name: e['name'],
 		description: e['description']
-	}
+	};
 });
 
-process.stdout.write(JSON.stringify({ nodes: nodes }));
+// add the links
+
+const links = [];
+
+crate.graph.map((e) => {
+	for ( const prop in e ) {
+		if( prop[0] !== '@' ) {
+			const vals = asArray(e[prop]);
+			vals.map((v) => {
+				if( v['@id'] ) {
+					const rel = makeId(relations, prop);
+					links.push({
+						source: e['@id'],
+						target: v['@id'],
+						value: rel,
+					})
+				}
+			});
+		}
+	}
+}) 
+
+process.stdout.write(JSON.stringify({ nodes: nodes, links: links }));

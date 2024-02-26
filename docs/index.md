@@ -47,5 +47,13 @@ toc: false
 <div>
   <h1>RO-Crate Viewer</h1>
 
+```js
+const graph = FileAttachment("./data/graph.json").json();
+```
+
+```js
+display(graph);
+```
+
 </div>
 
