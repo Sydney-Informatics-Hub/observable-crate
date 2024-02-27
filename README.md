@@ -1,6 +1,10 @@
 # RO-Crate Viewer
 
-This is an [Observable Framework](https://observablehq.com/framework) project. To start the local preview server, run:
+Experimenting with using the [Observable Framework](https://observablehq.com/framework)
+to explore the structure and contents of an [RO-Crate](https://www.researchobject.org/ro-crate/1.1/)
+
+
+To start the local preview server, run:
 
 ```
 npm run dev
