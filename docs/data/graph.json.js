@@ -33,6 +33,11 @@ function asArray(value) {
 	return [ value ];
 }
 
+function node_found(nodes, i) {
+	const found = nodes.filter((e) => e.id === i);
+	return found.length > 0;
+}
+
 // build a list of nodes
 
 const nodes = crate.graph.map((e) => {
@@ -45,6 +50,7 @@ const nodes = crate.graph.map((e) => {
 	};
 });
 
+
 // add the links
 
 const links = [];
@@ -56,11 +62,13 @@ crate.graph.map((e) => {
 			vals.map((v) => {
 				if( v['@id'] ) {
 					const rel = makeId(relations, prop);
-					links.push({
-						source: e['@id'],
-						target: v['@id'],
-						value: rel,
-					})
+					if( node_found(nodes, e['@id']) && node_found(nodes, v['@id']) ) {
+						links.push({
+							source: e['@id'],
+							target: v['@id'],
+							value: rel,
+						})
+					}
 				}
 			});
 		}

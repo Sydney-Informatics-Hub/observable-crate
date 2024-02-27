@@ -48,12 +48,22 @@ toc: false
   <h1>RO-Crate Viewer</h1>
 
 ```js
-const graph = FileAttachment("./data/graph.json").json();
+
+import { forcegraph } from "./components/forcegraph.js";
+
+
+
+const crate_graph = FileAttachment("./data/graph.json").json();
+
 ```
 
 ```js
-display(graph);
+const svg = forcegraph(crate_graph);
+
+display(svg.node());
+//display(crate_graph);
 ```
+
 
 </div>
 
