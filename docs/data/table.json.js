@@ -44,16 +44,16 @@ const nodes = crate.graph.map((e) => {
 	const t = makeId(types, e['@type']);
 	return {
 		id: e['@id'],
-		group: t,
+		type: e['@type'],
 		name: e['name'],
 		description: e['description']
 	};
 });
 
-let i = 0;
-for( const node of nodes ) {
-	node["i"] = i++;
-}
+// let i = 0;
+// for( const node of nodes ) {
+// 	node["i"] = i++;
+// }
 
 
 // add the links
