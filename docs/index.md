@@ -6,5 +6,3 @@ toc: true
 
 Experimenting with using Observable Framework to explore an RO-Crate.
 
-
-
