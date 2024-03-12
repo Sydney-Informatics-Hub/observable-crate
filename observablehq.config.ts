@@ -2,6 +2,12 @@
 export default {
   // The project’s title; used in the sidebar and webpage titles.
   title: "Observable RO-Crates",
+  cleanUrls: false,
+  pages: [
+    {name: "Table", path: "/table.html"},
+    {name: "Histogram", path: "/histogram.html"},
+    {name: "Force graph", path: "/force-graph.html"},
+  ]
 
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
