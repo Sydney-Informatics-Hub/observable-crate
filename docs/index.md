@@ -1,5 +1,5 @@
 ---
-title: RO-Crate explorer
+title: Home
 toc: true
 ---
 ```js
@@ -35,18 +35,22 @@ let node = hash_to_item(hash);
 
 ```
 
-## RO-Crate Viewer
+## ${node.id == "./" ? "RO-Crate" : root.name }
 
 <div class="card">
-<h3>${node.name || node.id}</h3>
+<h2>${node.name || node.id}</h2>
 <p>${node.description || ""}</p>
 </div>
 
 <div class="grid grid-cols-2">
+<div class="card">
 ${entity_links(nodes, "left", node)}
+</div>
 
+<div class="card">
 ${entity_links(nodes, "right", node)}
 </div>
+</div
 
 
 

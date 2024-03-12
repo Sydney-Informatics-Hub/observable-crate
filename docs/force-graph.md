@@ -1,5 +1,5 @@
 ---
-title: Force graph
+title: Graph
 toc: true
 ---
 ```js
@@ -20,6 +20,7 @@ ${root.description}
 
 
 ```js
+
 const svg = forcegraph({nodes: nodes_array, links: crate.links});
 
 display(svg.node());

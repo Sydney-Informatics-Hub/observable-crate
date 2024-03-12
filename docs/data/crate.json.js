@@ -1,8 +1,12 @@
 // turn an RO-Crate into a hash of entities
 
-//const CRATE_URL = 'https://raw.githubusercontent.com/Sydney-Informatics-Hub/Heurist-Integration/main/ro-crates/OMAA/ro-crate-metadata.json';
+// const CRATE_URL = 'https://raw.githubusercontent.com/Sydney-Informatics-Hub/Heurist-Integration/main/ro-crates/OMAA/ro-crate-metadata.json';
 
-const CRATE_URL = 'https://data.ldaca.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2Cinternational-corpus-of-english-australia';
+//const CRATE_URL = 'https://data.ldaca.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2Cinternational-corpus-of-english-australia';
+
+const CRATE_URL = 'https://data.ldaca.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2CAustLit';
+
+// const CRATE_URL = 'https://data.ldaca.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2Cdoi10.25910%252Fjkwy-wk76';
 
 import {ROCrate} from 'ro-crate';
 
@@ -53,6 +57,7 @@ crate.graph.map((e) => {
 	node['name'] = e['name'];
 	node['description'] = e['description'];
 	node['group'] = type_g;
+	node['type'] = e['@type'];
 	node['right'] = {};
 	node['left'] = {};
 	nodes[e['@id']] = node;

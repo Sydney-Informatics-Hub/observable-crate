@@ -1,8 +1,8 @@
 
 import * as d3 from "npm:d3";
 
-const width = 1280 ;
-const height = 1280;
+const width = 1280;
+const height = 800;
 const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
@@ -41,10 +41,10 @@ export function forcegraph(data) {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-        .attr("r", 5)
-        .attr("fill-opacity", 0.3)
+        .attr("r", 10)
+        .attr("fill-opacity", 0.5)
         .attr("fill", (d) => color(d.group));
-        //.call(drag(simulation));
+ //       .call(drag(simulation));
 
     node.append("title")
         .text((d) => d.name);
