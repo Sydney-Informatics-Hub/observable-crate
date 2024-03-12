@@ -1,6 +1,6 @@
 ---
-title: Graph
-toc: true
+title: Force Graph
+toc: false
 ---
 ```js
 

@@ -1,6 +1,6 @@
 ---
-title: Table and Search
-toc: true
+title: Table
+toc: false
 ---
 ## Table
 
@@ -36,7 +36,9 @@ function match_node(n, search) {
 const filtered = nodes_array.filter((n) => match_node(n, search));
 
 display(Inputs.table(filtered, {
+  rows: 100,
+  maxHeight: 600,
   columns:["id", "type", "name", "description"]
 }));
 
-
+```

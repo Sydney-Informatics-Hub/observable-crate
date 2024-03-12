@@ -51,13 +51,13 @@ const nodes = {};
 
 
 crate.graph.map((e) => {
-	const type_g = makeId(types, e['@type']); // mutiple types!!
+//	const groups = asArray(e['@type']).map((t) => makeId(types, t) );
 	const node = {};
 	node['id'] = e['@id'];
 	node['name'] = e['name'];
 	node['description'] = e['description'];
-	node['group'] = type_g;
-	node['type'] = e['@type'];
+//	node['group'] = groups;
+	node['type'] = asArray(e['@type']);
 	node['right'] = {};
 	node['left'] = {};
 	nodes[e['@id']] = node;
