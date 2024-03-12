@@ -1,8 +1,9 @@
 // fetch an RO-Crate and turn the graph into nodes and links for 
 // the d3 force-directed graph
 
+const CRATE_URL = 'https://data.ldaca.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2Cinternational-corpus-of-english-australia';
 
-const CRATE_URL = 'https://raw.githubusercontent.com/Sydney-Informatics-Hub/Heurist-Integration/main/ro-crates/OMAA/ro-crate-metadata.json';
+//const CRATE_URL = 'https://raw.githubusercontent.com/Sydney-Informatics-Hub/Heurist-Integration/main/ro-crates/OMAA/ro-crate-metadata.json';
 
 import {ROCrate} from 'ro-crate';
 
