@@ -13,7 +13,7 @@ export function forcegraph(data) {
     const links = data.links.map((d) => Object.create(d));
     const nodes = data.nodes.map((d) => Object.create(d));
 
-    const force = d3.forceManyBody().strength(-0.5);
+    const force = d3.forceManyBody().strength(-20);
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id((d) => d.id))
