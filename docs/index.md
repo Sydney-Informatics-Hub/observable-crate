@@ -6,9 +6,9 @@ toc: true
 
 import { root_entity, entity_links } from "./components/crate.js";
 
-const entities = await FileAttachment("./data/entities.json").json();
-const root = root_entity(entities);
-let entity = root;
+const crate = await FileAttachment("./data/crate.json").json();
+const nodes = crate.nodes;
+const root = root_entity(nodes);
 
 let hash = Generators.observe(notify => {
   const hashchange = () => notify(location.hash);
@@ -17,25 +17,36 @@ let hash = Generators.observe(notify => {
   return () => removeEventListener("hashchange", hashchange);
 });
 
-function load_entity(eid) {
-	if( eid in entities) {
-		entity = entities[eid]
+```
+
+```js
+function hash_to_item(hash) {
+	if( hash ) {
+		const eid = hash.substr(1);
+		if( nodes[eid] ) {
+			return nodes[eid];
+		}
 	}
+	return root;
 }
 
+let node = hash_to_item(hash);
 
 
 ```
 
-## ${root.name}
+## RO-Crate Viewer
 
+<div class="card">
+<h3>${node.name || node.id}</h3>
+<p>${node.description || ""}</p>
+</div>
 
-<h2>${entity.name}</h2>
-<p><pre>${entity.id}</pre></p>
-<p>${entity.description}</p>
+<div class="grid grid-cols-2">
+${entity_links(nodes, "left", node)}
 
-${entity_links(entities, entity, (eid) => load_entity(eid))}
+${entity_links(nodes, "right", node)}
+</div>
 
-<p>hash is ${hash}</p>
 
 

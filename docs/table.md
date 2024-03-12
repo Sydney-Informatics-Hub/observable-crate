@@ -5,13 +5,17 @@ toc: true
 ## Table
 
 ```js
-const crate = FileAttachment("./data/table.json").json();
+const crate = FileAttachment("./data/crate.json").json();
 ```
 
 ```js
+
+const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
+
+
 const types_s = new Set;
 
-crate.map((n) => { types_s.add(n.type) });
+nodes_array.map((n) => { types_s.add(n.type) });
 
 ```
 
@@ -27,21 +31,24 @@ function match_node(n, search) {
   if( !search ) {
       return true;
   }
-  return n.name?.includes(search) || n.description?.includes(search);
+  const lcs = search.toLowerCase();
+  return n.name?.toLowerCase().includes(lcs) || n.description?.toLowerCase().includes(lcs);
 }
 ```
 ```js
-const filtered = crate.filter((n) => match_node(n, search));
+const filtered = nodes_array.filter((n) => match_node(n, search));
 
-display(Inputs.table(filtered));
+display(Inputs.table(filtered, {
+  columns:["id", "name", "description"]
+}));
 
-display(Plot.plot({
-  y: {grid: true},
-  marks: [
-    Plot.rectY(filtered, Plot.groupX({y: "count"}, {x: "type", fill:"type"})),
-    Plot.ruleY([0]),
-    Plot.axisX({tickRotate: 45})
-    ]
-  }
-));
+// display(Plot.plot({
+//   y: {grid: true},
+//   marks: [
+//     Plot.rectY(filtered, Plot.groupX({y: "count"}, {x: "type", fill:"type"})),
+//     Plot.ruleY([0]),
+//     Plot.axisX({tickRotate: 45})
+//     ]
+//   }
+// ));
 ```

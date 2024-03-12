@@ -7,14 +7,15 @@ export function root_entity(entities) {
 
 export function crate_link(entities, i) {
 	const target = entities[i];
-	return html`<a href="#${i}">${target.name}</a>`;
+	const text = target.name || i;
+	return html`<a href="#${i}">${text}</a>`;
 }
 
-export function entity_links(entities, entity) {
+export function entity_links(entities, dir, entity) {
 	return html`<ul>${
-		Object.keys(entity.right).map((prop) => html`<li>${prop}
+		Object.keys(entity[dir]).map((prop) => html`<li>${prop}
 			<ul>
-				${entity.right[prop].map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
+				${entity[dir][prop].map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
 			</ul>
 		</li>`)
 	}</ul>`

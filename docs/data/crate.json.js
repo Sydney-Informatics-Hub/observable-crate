@@ -59,19 +59,28 @@ crate.graph.map((e) => {
 });
 
 
-// add links right ->  and -> links left
+const links = [];
 
-crate.graph.map((source) => {
-	for ( const prop in source ) {
-		const sid = source['@id'];
+// Add right and left links to the nodes and
+// build a separate links array for the graph
+
+crate.graph.map((s) => {
+	for ( const prop in s ) {
+		const sid = s['@id'];
 		if( prop[0] !== '@' ) {
-			const vals = asArray(source[prop]);
-			vals.map((target) => {
-				const tid = target['@id'];
+			const vals = asArray(s[prop]);
+			vals.map((t) => {
+				const tid = t['@id'];
 				if( tid ) {
+					const rel = makeId(relations, prop);
 					if( sid in nodes && tid in nodes ) {
 						addLink(nodes[sid].right, prop, tid);
 						addLink(nodes[tid].left, prop, sid);
+						links.push({
+							source: sid,
+							target: tid,
+							value: rel,
+						})
 					}
 				}
 			});
@@ -79,4 +88,4 @@ crate.graph.map((source) => {
 	}
 }) 
 
-process.stdout.write(JSON.stringify(nodes));
+process.stdout.write(JSON.stringify({ nodes: nodes, links: links }));
