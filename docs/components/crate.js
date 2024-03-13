@@ -1,5 +1,4 @@
 import {html} from "npm:htl";
-import {Generators} from "npm:@observablehq/stdlib"
 
 export function root_entity(entities) {
 	const root_id = entities['ro-crate-metadata.json']['right']['about'][0];
@@ -15,10 +14,14 @@ export function crate_link(entities, i) {
 export function entity_links(entities, dir, entity) {
 	return html`<ul>${
 		Object.keys(entity[dir]).map((prop) => html`<li>${prop}
-			<ul>
-				${entity[dir][prop].map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
-			</ul>
+			${link_list(entities, entity[dir][prop])}
 		</li>`)
 	}</ul>`
+} 
+
+function link_list(entities, links) {
+	return html`<ul class="relations">
+		${links.map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
+	</ul>`
 }
 

@@ -2,9 +2,15 @@
 title: Home
 toc: false
 ---
+<style>
+ul.relations {
+	max-height:100px;
+	overflow:auto;
+}
+</style>
 ```js
 
-import { root_entity, entity_links } from "./components/crate.js";
+import { root_entity, entity_links, crate_link } from "./components/crate.js";
 
 const crate = await FileAttachment("./data/crate.json").json();
 const nodes = crate.nodes;
@@ -44,13 +50,12 @@ let node = hash_to_item(hash);
 
 <div class="grid grid-cols-2">
 <div class="card">
+<p>Links to this entity:</p>
 ${entity_links(nodes, "left", node)}
 </div>
-
 <div class="card">
+<p>Links to this entity:</p>
 ${entity_links(nodes, "right", node)}
 </div>
-</div
-
-
+</div>
 
