@@ -14,6 +14,7 @@ import { root_entity, entity_links, crate_link } from "./components/crate.js";
 
 const crate = await FileAttachment("./data/crate.json").json();
 const nodes = crate.nodes;
+
 const root = root_entity(nodes);
 
 let hash = Generators.observe(notify => {
@@ -51,11 +52,11 @@ let node = hash_to_item(hash);
 <div class="grid grid-cols-2">
 <div class="card">
 <p>Links to this entity:</p>
-${entity_links(nodes, "left", node)}
+${entity_links(nodes, "links_to", node)}
 </div>
 <div class="card">
-<p>Links to this entity:</p>
-${entity_links(nodes, "right", node)}
+<p>Links from this entity:</p>
+${entity_links(nodes, "links_from", node)}
 </div>
 </div>
 

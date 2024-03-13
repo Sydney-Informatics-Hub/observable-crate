@@ -6,23 +6,9 @@ export default {
   pages: [
     {name: "Table", path: "/table.html"},
     {name: "Histogram", path: "/histogram.html"},
-    {name: "Force graph", path: "/force-graph.html"},
+    {name: "Naive tree", path: "/naive-tree.html"},
   ]
 
-  // The pages and sections in the sidebar. If you don’t specify this option,
-  // all pages will be listed in alphabetical order. Listing pages explicitly
-  // lets you organize them into sections and have unlisted pages.
-  // pages: [
-  //   {
-  //     name: "Examples",
-  //     pages: [
-  //       {name: "Dashboard", path: "/example-dashboard"},
-  //       {name: "Report", path: "/example-report"}
-  //     ]
-  //   }
-  // ],
-
-  // Some additional configuration options and their defaults:
   // theme: "default", // try "light", "dark", "slate", etc.
   // header: "", // what to show in the header (HTML)
   // footer: "Built with Observable.", // what to show in the footer (HTML)

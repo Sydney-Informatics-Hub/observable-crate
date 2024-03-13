@@ -43,8 +43,8 @@ export function forcegraph(data) {
       .join("circle")
         .attr("r", 10)
         .attr("fill-opacity", 0.5)
-        .attr("fill", (d) => color(d.group));
- //       .call(drag(simulation));
+        .attr("fill", (d) => color(d.group))
+        .call(drag(simulation));
 
     node.append("title")
         .text((d) => d.name);

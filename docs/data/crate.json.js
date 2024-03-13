@@ -51,15 +51,13 @@ const nodes = {};
 
 
 crate.graph.map((e) => {
-//	const groups = asArray(e['@type']).map((t) => makeId(types, t) );
 	const node = {};
 	node['id'] = e['@id'];
 	node['name'] = e['name'];
 	node['description'] = e['description'];
-//	node['group'] = groups;
 	node['type'] = asArray(e['@type']);
-	node['right'] = {};
-	node['left'] = {};
+	node['links_to'] = {};
+	node['links_from'] = {};
 	nodes[e['@id']] = node;
 });
 
@@ -68,6 +66,7 @@ const links = [];
 
 // Add right and left links to the nodes and
 // build a separate links array for the graph
+// FIXME - if the crate has bidirectional links this will create too many
 
 crate.graph.map((s) => {
 	for ( const prop in s ) {
@@ -79,8 +78,8 @@ crate.graph.map((s) => {
 				if( tid ) {
 					const rel = makeId(relations, prop);
 					if( sid in nodes && tid in nodes ) {
-						addLink(nodes[sid].right, prop, tid);
-						addLink(nodes[tid].left, prop, sid);
+						addLink(nodes[sid].links_from, prop, tid);
+						addLink(nodes[tid].links_to, prop, sid);
 						links.push({
 							source: sid,
 							target: tid,
