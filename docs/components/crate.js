@@ -31,7 +31,7 @@ export function make_colour_map(types) {
 	const tlist = Array.from(types);
 	const cmap = {};
 	for( const i in tlist) {
-		cmap[tlist[i]] = d3.schemeAccent[i];
+		cmap[tlist[i]] = d3.schemeCategory10[i];
 	}
 	return (tarray) => {
 		return cmap[tarray[0]]
