@@ -39,13 +39,16 @@ export function forcegraph(data, colours) {
         .attr("stroke-width", 0.2)
         .selectAll("circle")
         .data(nodes)
-        .join("circle")
+        .join("g")
+        .call(drag(simulation));
+
+
+    node.append("circle")
         .attr("r", 10)
         .attr("fill-opacity", 0.8)
         .attr("fill", (d) => colours(d.type))
-        .call(drag(simulation));
 
-    node.append("title")
+    node.append("text")
         .text((d) => `${d.type}: ${d.name}`);
 
     function ticked() {

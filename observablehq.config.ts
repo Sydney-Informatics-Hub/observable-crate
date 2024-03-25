@@ -4,10 +4,9 @@ export default {
   title: "RO-Crate Viewer",
   cleanUrls: false,
   pages: [
-    {name: "Summary", path: "/summary.html"},
+    {name: "Explorer", path: "/summary.html"},
     {name: "Table", path: "/table.html"},
     {name: "Histogram", path: "/histogram.html"},
-    {name: "Force graph", path: "/force-graph.html"},
   ]
 
   // theme: "default", // try "light", "dark", "slate", etc.
