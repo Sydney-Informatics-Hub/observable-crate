@@ -37,19 +37,22 @@ export function forcegraph(data, colours) {
     const node = svg.append("g")
         .attr("stroke", "var(--theme-background)")
         .attr("stroke-width", 0.2)
-        .selectAll("circle")
+        .selectAll("g")
         .data(nodes)
         .join("g")
+        .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
         .call(drag(simulation));
 
 
     node.append("circle")
         .attr("r", 10)
         .attr("fill-opacity", 0.8)
-        .attr("fill", (d) => colours(d.type))
+        .attr("fill", (d) => colours(d.type));
 
     node.append("text")
-        .text((d) => `${d.type}: ${d.name}`);
+        .text((d) => `${d.type}: ${d.name}`)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "9");
 
     function ticked() {
         link
@@ -58,9 +61,7 @@ export function forcegraph(data, colours) {
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y);
 
-        node
-          .attr("cx", (d) => d.x)
-        .attr("cy", (d) => d.y);
+        node.attr("transform", (d) => "translate(" + d.x + "," + d.y + ")");
     }
 
 
