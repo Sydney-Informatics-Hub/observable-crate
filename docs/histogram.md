@@ -5,12 +5,16 @@ toc: false
 ## Entities by type
 
 ```js
+import { make_colour_map } from "./components/crate.js";
+
 const crate = FileAttachment("./data/crate.json").json();
+
 ```
 
 ```js
 
 const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
+const colours = make_colour_map(crate.types);
 
 // disaggregate types for histogram
 
@@ -27,6 +31,7 @@ nodes_array.map((n) => {
 ```js
 
 display(Plot.plot({
+  color: colours,
   y: {grid: true},
   marginBottom: 120,
   marginRight: 100,

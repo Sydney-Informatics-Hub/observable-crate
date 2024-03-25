@@ -3,11 +3,10 @@ import * as d3 from "npm:d3";
 
 const width = 1280;
 const height = 800;
-const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
 
-export function forcegraph(data) {
+export function forcegraph(data, colours) {
 
         // Copy the data to protect against mutation by d3.forceSimulation.
     const links = data.links.map((d) => Object.create(d));
@@ -29,25 +28,25 @@ export function forcegraph(data) {
 
     const link = svg.append("g")
         .attr("stroke", "var(--theme-foreground-faint)")
-        .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .join("line")
-        .attr("stroke-width", 0.3);
+        .attr("stroke-opacity", 0.8)
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("stroke-width", 0.5);
 
     const node = svg.append("g")
         .attr("stroke", "var(--theme-background)")
         .attr("stroke-width", 0.2)
-      .selectAll("circle")
-      .data(nodes)
-      .join("circle")
+        .selectAll("circle")
+        .data(nodes)
+        .join("circle")
         .attr("r", 10)
-        .attr("fill-opacity", 0.5)
-        .attr("fill", (d) => color(d.group))
+        .attr("fill-opacity", 0.8)
+        .attr("fill", (d) => colours(d.type))
         .call(drag(simulation));
 
     node.append("title")
-        .text((d) => d.name);
+        .text((d) => `${d.type}: ${d.name}`);
 
     function ticked() {
         link

@@ -22,13 +22,16 @@ Tree visualisation
 ```js
 
 display(Plot.plot({
-  height: 4080,
-  marginLeft: 100,
   axis: null,
   marks: [
-    Plot.tree(tree, {textStroke: "white", delimiter: "|"})
+    Plot.tree(tree, {
+      textStroke: "white",
+      delimiter: "|",
+      treeSort: "node:height"
+    })
   ]
 }));
 
+display(tree);
 ```
 
