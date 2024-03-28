@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Explorer | RO-Crate Explorer</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-array@3.2.4/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-axis@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-brush@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-chord@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-color@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-contour@4.0.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-delaunay@6.0.4/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-dispatch@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-drag@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-dsv@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-ease@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-fetch@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-force@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-format@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-hierarchy@3.1.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-path@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-polygon@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-quadtree@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-random@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-scale@4.0.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-shape@3.2.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-time-format@4.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-time@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-timer@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-transition@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-zoom@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/delaunator@5.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/htl@0.3.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/internmap@2.0.3/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/isoformat@0.2.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/robust-predicates@3.0.2/+esm">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+
+define({id: "e7201e19", inputs: ["FileAttachment","Generators","location","addEventListener","removeEventListener"], outputs: ["root_entity","entity","crate","nodes","nodes_array","root","hash"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment,Generators,location,addEventListener,removeEventListener) => {
+const {root_entity, entity} = await import("./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53");
+
+const crate = await FileAttachment("./data/crate.json").json();
+const nodes = crate.nodes;
+
+const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
+
+const root = root_entity(nodes);
+
+let hash = Generators.observe(notify => {
+  const hashchange = () => notify(location.hash);
+  hashchange();
+  addEventListener("hashchange", hashchange);
+  return () => removeEventListener("hashchange", hashchange);
+});
+
+return {root_entity,entity,crate,nodes,nodes_array,root,hash};
+}});
+
+define({id: "d7eec97a", inline: true, inputs: ["root","display"], body: async (root,display) => {
+display(await(
+root.name 
+))
+}});
+
+define({id: "c3ab4890", inputs: ["nodes","root","hash","view","Inputs"], outputs: ["hash_to_item","node","match_node","search"], body: (nodes,root,hash,view,Inputs) => {
+function hash_to_item(hash) {
+	if( hash ) {
+		const eid = hash.substr(1);
+		if( nodes[eid] ) {
+			return nodes[eid];
+		}
+	}
+	return root;
+}
+
+let node = hash_to_item(hash);
+
+function match_node(n, search) {
+  if( !search ) {
+      return true;
+  }
+  const lcs = search.toLowerCase();
+  return n.name?.toLowerCase().includes(lcs) || n.description?.toLowerCase().includes(lcs);
+}
+
+const search = view(Inputs.text({
+  label: "Search",
+  placeholder: "search names and descriptions",
+  value: ""
+}));
+
+return {hash_to_item,node,match_node,search};
+}});
+
+define({id: "cdd01b83", inputs: ["nodes_array","match_node","search","display","entity","nodes","node"], outputs: ["filtered"], body: (nodes_array,match_node,search,display,entity,nodes,node) => {
+const filtered = nodes_array.filter((n) => match_node(n, search));
+
+if( search ) {
+  filtered.map((n) => display(entity(nodes, n)));
+} else {
+  display(entity(nodes, node));
+}
+return {filtered};
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link observablehq-link-active"><a href="./">RO-Crate Explorer</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
+    <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
+    <li class="observablehq-link"><a href="./about.html">About</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<style>
+ul.relations {
+	max-height:100px;
+	overflow:auto;
+}
+</style>
+<div id="cell-e7201e19" class="observablehq observablehq--block"></div>
+<h2 tabindex="-1"><a class="observablehq-header-anchor" href="#"><span id="cell-d7eec97a" class="observablehq--loading"></span></a></h2>
+<div id="cell-c3ab4890" class="observablehq observablehq--block"></div>
+<div id="cell-cdd01b83" class="observablehq observablehq--block"></div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="next" href="./statistics.html"><span>Statistics</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T06:43:34">Mar 29, 2024</a>.</div>
+</footer>
+</div>
