@@ -28,7 +28,8 @@ function match_node(n, search) {
       return true;
   }
   const lcs = search.toLowerCase();
-  return n.name?.toLowerCase().includes(lcs) || n.description?.toLowerCase().includes(lcs);
+  console.log(n);
+  return n.name?.includes(lcs) || n.description?.includes(lcs);
 }
 ```
 

@@ -47,3 +47,30 @@ display(Plot.plot({
 ));
 
 ```
+
+```js
+const search = view(Inputs.text({
+  label: "Search",
+  placeholder: "search names and descriptions",
+  value: ""
+}));
+
+function match_node(n, search) {
+  if( !search ) {
+      return true;
+  }
+  const lcs = search.toLowerCase();
+  return n.name?.toLowerCase().includes(lcs) || n.description?.toLowerCase().includes(lcs);
+}
+```
+
+```js
+const filtered = nodes_array.filter((n) => match_node(n, search));
+
+display(Inputs.table(filtered, {
+  rows: 100,
+  maxHeight: 600,
+  columns:["id", "type", "name", "description"]
+}));
+
+```
