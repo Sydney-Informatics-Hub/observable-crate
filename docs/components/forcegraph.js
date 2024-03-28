@@ -3,11 +3,10 @@ import * as d3 from "npm:d3";
 
 const width = 1280;
 const height = 800;
-const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
 
-export function forcegraph(data) {
+export function forcegraph(data, colours) {
 
         // Copy the data to protect against mutation by d3.forceSimulation.
     const links = data.links.map((d) => Object.create(d));
@@ -29,25 +28,31 @@ export function forcegraph(data) {
 
     const link = svg.append("g")
         .attr("stroke", "var(--theme-foreground-faint)")
-        .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .join("line")
-        .attr("stroke-width", 0.3);
+        .attr("stroke-opacity", 0.8)
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("stroke-width", 0.5);
 
     const node = svg.append("g")
         .attr("stroke", "var(--theme-background)")
         .attr("stroke-width", 0.2)
-      .selectAll("circle")
-      .data(nodes)
-      .join("circle")
-        .attr("r", 10)
-        .attr("fill-opacity", 0.5)
-        .attr("fill", (d) => color(d.group));
- //       .call(drag(simulation));
+        .selectAll("g")
+        .data(nodes)
+        .join("g")
+        .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
+        .call(drag(simulation));
 
-    node.append("title")
-        .text((d) => d.name);
+
+    node.append("circle")
+        .attr("r", 10)
+        .attr("fill-opacity", 0.8)
+        .attr("fill", (d) => colours(d.type));
+
+    node.append("text")
+        .text((d) => `${d.type}: ${d.name}`)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "9");
 
     function ticked() {
         link
@@ -56,9 +61,7 @@ export function forcegraph(data) {
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y);
 
-        node
-          .attr("cx", (d) => d.x)
-        .attr("cy", (d) => d.y);
+        node.attr("transform", (d) => "translate(" + d.x + "," + d.y + ")");
     }
 
 
