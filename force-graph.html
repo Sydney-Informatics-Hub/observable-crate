@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
-<link rel="modulepreload" href="./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db">
 <link rel="modulepreload" href="./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
@@ -56,7 +56,7 @@
 import {define} from "./_observablehq/client.js";
 
 define({id: "fa0a9349", inputs: ["FileAttachment"], outputs: ["root_entity","make_colour_map","forcegraph","crate","root","nodes","colours"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment) => {
-const [{root_entity, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
+const [{root_entity, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
 
 const crate = await FileAttachment("./data/crate.json").json();
 const root = root_entity(crate.nodes);
@@ -135,6 +135,7 @@ return {show_nodes,show_ids,show_links,svg};
   <ol>
     <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
     <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
+    <li class="observablehq-link"><a href="./upload.html">Upload</a></li>
     <li class="observablehq-link"><a href="./about.html">About</a></li>
   </ol>
 </nav>
@@ -150,6 +151,6 @@ return {show_nodes,show_ids,show_links,svg};
 <div id="cell-d09d1ed5" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T06:43:34">Mar 29, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T10:50:51">Mar 29, 2024</a>.</div>
 </footer>
 </div>
