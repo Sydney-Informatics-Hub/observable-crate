@@ -2,6 +2,17 @@ import {html} from "npm:htl";
 
 import * as d3 from "npm:d3";
 
+export function nil_crate() {
+	return {
+		nodes: [],
+		links: [],
+		types: [],
+		relations: [],
+		externals: [],
+
+	}
+}
+
 export function root_entity(entities) {
 	const root_id = entities['ro-crate-metadata.json']['links_from']['about'][0];
 	return entities[root_id];
