@@ -10,10 +10,12 @@ ul.relations {
 </style>
 ```js
 
-import { root_entity, entity_links, crate_link } from "./components/crate.js";
+import { root_entity, entity } from "./components/crate.js";
 
 const crate = await FileAttachment("./data/crate.json").json();
 const nodes = crate.nodes;
+
+const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
 
 const root = root_entity(nodes);
 
@@ -25,6 +27,8 @@ let hash = Generators.observe(notify => {
 });
 
 ```
+
+## ${root.name }
 
 ```js
 function hash_to_item(hash) {
@@ -39,24 +43,29 @@ function hash_to_item(hash) {
 
 let node = hash_to_item(hash);
 
+function match_node(n, search) {
+  if( !search ) {
+      return true;
+  }
+  const lcs = search.toLowerCase();
+  return n.name?.toLowerCase().includes(lcs) || n.description?.toLowerCase().includes(lcs);
+}
+
+const search = view(Inputs.text({
+  label: "Search",
+  placeholder: "search names and descriptions",
+  value: ""
+}));
 
 ```
 
-## ${root.name }
+```js
 
-<div class="card">
-<h2>${node.name || node.id}</h2>
-<p>${node.description || ""}</p>
-</div>
+const filtered = nodes_array.filter((n) => match_node(n, search));
 
-<div class="grid grid-cols-2">
-<div class="card">
-<p>Links to this entity:</p>
-${entity_links(nodes, "links_to", node)}
-</div>
-<div class="card">
-<p>Links from this entity:</p>
-${entity_links(nodes, "links_from", node)}
-</div>
-</div>
-
+if( search ) {
+  filtered.map((n) => display(entity(nodes, n)));
+} else {
+  display(entity(nodes, node));
+}
+```

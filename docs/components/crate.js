@@ -40,6 +40,25 @@ export function make_colour_map(types) {
 
 
 
+export function entity(nodes, node) {
+	return html`<div class="card">
+<h2>${node.name || node.id}</h2>
+<p>${node.description || ""}</p>
+</div>
+
+<div class="grid grid-cols-2">
+<div class="card">
+<p>Links to this entity:</p>
+${entity_links(nodes, "links_to", node)}
+</div>
+<div class="card">
+<p>Links from this entity:</p>
+${entity_links(nodes, "links_from", node)}
+</div>
+</div>`;
+}
+
+
 export function naive_tree(crate) {
 	const nodes = crate.nodes;
 	const links = crate.links;
