@@ -1,5 +1,5 @@
 ---
-title: Home
+title: Explorer
 toc: false
 ---
 <style>
@@ -42,7 +42,7 @@ let node = hash_to_item(hash);
 
 ```
 
-## ${node.id == "./" ? "RO-Crate" : root.name }
+## ${root.name }
 
 <div class="card">
 <h2>${node.name || node.id}</h2>

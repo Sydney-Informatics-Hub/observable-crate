@@ -39,6 +39,14 @@ function asArray(value) {
 	return [ value ];
 }
 
+function notArray(value) {
+	if( Array.isArray(value) ) {
+		return value.join(' ')
+	} else {
+		return value;
+	}
+}
+
 function addLink(proplist, prop, id) {
 	if( !(prop in proplist) ) {
 		proplist[prop] = [];
@@ -65,8 +73,8 @@ const nodes = {};
 crate.graph.map((e) => {
 	const node = {};
 	node['id'] = e['@id'];
-	node['name'] = e['name'];
-	node['description'] = e['description'];
+	node['name'] = notArray(e['name']);
+	node['description'] = notArray(e['description']);
 	node['type'] = asArray(e['@type']);
 	node['type'].map((t) => makeId(types, t));
 	node['links_to'] = {};
