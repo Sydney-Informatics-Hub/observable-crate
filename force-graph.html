@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>RO-Crate explorer | RO-Crate Explorer</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53">
+<link rel="modulepreload" href="./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-array@3.2.4/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-axis@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-brush@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-chord@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-color@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-contour@4.0.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-delaunay@6.0.4/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-dispatch@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-drag@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-dsv@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-ease@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-fetch@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-force@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-format@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-hierarchy@3.1.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-path@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-polygon@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-quadtree@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-random@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-scale@4.0.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-selection@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-shape@3.2.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-time-format@4.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-time@3.1.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-timer@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-transition@3.0.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3-zoom@3.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/delaunator@5.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/htl@0.3.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/internmap@2.0.3/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/isoformat@0.2.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/robust-predicates@3.0.2/+esm">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+
+define({id: "fa0a9349", inputs: ["FileAttachment"], outputs: ["root_entity","make_colour_map","forcegraph","crate","root","nodes","colours"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment) => {
+const [{root_entity, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/crate.js?sha=663d3e4143cbde225bfd7df7ea6f1807cac1a1847d8a19944ab2f39ec912db53"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
+
+const crate = await FileAttachment("./data/crate.json").json();
+const root = root_entity(crate.nodes);
+const nodes = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
+
+
+const colours = make_colour_map(crate.types);
+
+return {root_entity,make_colour_map,forcegraph,crate,root,nodes,colours};
+}});
+
+define({id: "dd88943e", inline: true, inputs: ["root","display"], body: async (root,display) => {
+display(await(
+root.name
+))
+}});
+
+define({id: "f96ea595", inline: true, inputs: ["root","display"], body: async (root,display) => {
+display(await(
+root.description
+))
+}});
+
+define({id: "d7966d98", inputs: ["view","Inputs","crate"], outputs: ["use_types"], body: (view,Inputs,crate) => {
+const use_types = view(Inputs.checkbox(crate.types, { 
+  multiple: true, 
+  label: "Entity types",
+  value: crate.types,
+}));
+return {use_types};
+}});
+
+define({id: "4e681039", inputs: ["view","Inputs","crate"], outputs: ["use_rels"], body: (view,Inputs,crate) => {
+const use_rels = view(Inputs.checkbox(crate.relations, {
+  multiple: true,
+  label: "Relationships",
+  value: crate.relations,
+}));
+return {use_rels};
+}});
+
+define({id: "a0c662a7", inputs: ["view","Inputs","crate"], outputs: ["use_externals"], body: (view,Inputs,crate) => {
+const use_externals = view(Inputs.checkbox(crate.externals, {
+  multiple: true,
+  label: "External ID domains",
+}));
+return {use_externals};
+}});
+
+define({id: "d09d1ed5", inputs: ["nodes","use_types","crate","use_rels","forcegraph","colours","display"], outputs: ["show_nodes","show_ids","show_links","svg"], body: (nodes,use_types,crate,use_rels,forcegraph,colours,display) => {
+const show_nodes = nodes.filter((n) => use_types.includes(n.type[0]));
+const show_ids = show_nodes.map((n) => n.id);
+const show_links = crate.links.filter(
+  (l) => {
+    if( !use_rels.includes(l.property) ) {
+      return false;
+    }
+    return show_ids.includes(l.source) && show_ids.includes(l.target);
+  });
+
+const svg = forcegraph({nodes: show_nodes, links: show_links}, colours);
+
+display(svg.node());
+
+return {show_nodes,show_ids,show_links,svg};
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">RO-Crate Explorer</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
+    <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
+    <li class="observablehq-link"><a href="./about.html">About</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<div id="cell-fa0a9349" class="observablehq observablehq--block"></div>
+<h2 tabindex="-1"><a class="observablehq-header-anchor" href="#"><span id="cell-dd88943e" class="observablehq--loading"></span></a></h2>
+<p><span id="cell-f96ea595" class="observablehq--loading"></span></p>
+<div id="cell-d7966d98" class="observablehq observablehq--block"></div>
+<div id="cell-4e681039" class="observablehq observablehq--block"></div>
+<div id="cell-a0c662a7" class="observablehq observablehq--block"></div>
+<div id="cell-d09d1ed5" class="observablehq observablehq--block"></div>
+</main>
+<footer id="observablehq-footer">
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T06:43:34">Mar 29, 2024</a>.</div>
+</footer>
+</div>
