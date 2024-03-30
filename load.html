@@ -84,12 +84,14 @@ const root = root_entity(crate.nodes);
 return {crate,root};
 }});
 
-define({id: "83753c7d", inputs: ["sessionStorage","crate","display","root"], body: (sessionStorage,crate,display,root) => {
+define({id: "02f7b46b", inputs: ["sessionStorage","crate","display","html","root"], body: (sessionStorage,crate,display,html,root) => {
 sessionStorage.setItem('ro-crate', JSON.stringify(crate))
-console.log("Wrote crate to storage");
 
-display(root.name);
-display(root.description)
+display(html`<p>RO-Crate file loaded</p>`);
+
+display(html`<h3>${root.name}</h3>`);
+display(html`<p>${root.description}</p>`);
+display(html`<a href="/">Explore this crate...</a>`);
 
 }});
 
@@ -119,9 +121,9 @@ stored in your browser session and won't persist.</p>
 <div id="cell-3319cc8f" class="observablehq observablehq--block"></div>
 <div id="cell-d13038d9" class="observablehq observablehq--block"></div>
 <div id="cell-e2b984e0" class="observablehq observablehq--block"></div>
-<div id="cell-83753c7d" class="observablehq observablehq--block"></div>
+<div id="cell-02f7b46b" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T13:53:41">Mar 30, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T14:06:17">Mar 30, 2024</a>.</div>
 </footer>
 </div>
