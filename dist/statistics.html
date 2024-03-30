@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
-<link rel="modulepreload" href="./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
@@ -57,12 +57,12 @@
 
 import {define} from "./_observablehq/client.js";
 
-define({id: "2e253931", inputs: ["FileAttachment"], outputs: ["make_colour_map","crate"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment) => {
-const {make_colour_map} = await import("./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db");
+define({id: "108b81f8", outputs: ["current_crate","make_colour_map","crate"], body: async () => {
+const {current_crate, make_colour_map} = await import("./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d");
 
-const crate = FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 
-return {make_colour_map,crate};
+return {current_crate,make_colour_map,crate};
 }});
 
 define({id: "8ef8be87", inputs: ["crate","make_colour_map"], outputs: ["nodes_array","colour_map","entities","myCategoricalColors"], body: (crate,make_colour_map) => {
@@ -139,9 +139,9 @@ return {filtered};
     <li class="observablehq-link"><a href="./">RO-Crate Explorer</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./load.html">Load</a></li>
     <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
     <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
-    <li class="observablehq-link"><a href="./upload.html">Upload</a></li>
     <li class="observablehq-link"><a href="./about.html">About</a></li>
   </ol>
 </nav>
@@ -149,13 +149,13 @@ return {filtered};
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h2 id="entities-by-type" tabindex="-1"><a class="observablehq-header-anchor" href="#entities-by-type">Entities by type</a></h2>
-<div id="cell-2e253931" class="observablehq observablehq--block"></div>
+<div id="cell-108b81f8" class="observablehq observablehq--block"></div>
 <div id="cell-8ef8be87" class="observablehq observablehq--block"></div>
 <div id="cell-abd4ac37" class="observablehq observablehq--block"></div>
 <div id="cell-851bcef5" class="observablehq observablehq--block"></div>
 <div id="cell-6e6cba4e" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T10:50:51">Mar 29, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T13:53:41">Mar 30, 2024</a>.</div>
 </footer>
 </div>
