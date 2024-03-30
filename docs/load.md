@@ -39,10 +39,12 @@ const root = root_entity(crate.nodes);
 ```js
 
 sessionStorage.setItem('ro-crate', JSON.stringify(crate))
-console.log("Wrote crate to storage");
 
-display(root.name);
-display(root.description)
+display(html`<p>RO-Crate file loaded</p>`);
+
+display(html`<h3>${root.name}</h3>`);
+display(html`<p>${root.description}</p>`);
+display(html`<a href="/">Explore this crate...</a>`);
 
 ```
 
