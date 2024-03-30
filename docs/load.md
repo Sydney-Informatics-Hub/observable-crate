@@ -44,7 +44,7 @@ display(html`<p>RO-Crate file loaded</p>`);
 
 display(html`<h3>${root.name}</h3>`);
 display(html`<p>${root.description}</p>`);
-display(html`<a href="/">Explore this crate...</a>`);
+display(html`<a href="./">Explore this crate...</a>`);
 
 ```
 
