@@ -10,9 +10,9 @@ ul.relations {
 </style>
 ```js
 
-import { root_entity, entity } from "./components/crate.js";
+import { root_entity, entity, current_crate } from "./components/crate.js";
 
-const crate = await FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 const nodes = crate.nodes;
 
 const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
@@ -28,7 +28,7 @@ let hash = Generators.observe(notify => {
 
 ```
 
-## ${root.name }
+## ${root ? root.name : 'No RO-Crate loaded'}
 
 ```js
 function hash_to_item(hash) {
@@ -66,6 +66,10 @@ const filtered = nodes_array.filter((n) => match_node(n, search));
 if( search ) {
   filtered.map((n) => display(entity(nodes, n)));
 } else {
-  display(entity(nodes, node));
+  if( node ) {
+    display(entity(nodes, node));
+  } else {
+    display(html`<p><a href="load.html">Load an RO-Crate</a></p>`)
+  }
 }
 ```
