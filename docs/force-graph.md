@@ -4,10 +4,10 @@ toc: false
 ---
 ```js
 
-import { root_entity, make_colour_map  } from "./components/crate.js";
+import { root_entity, current_crate, make_colour_map  } from "./components/crate.js";
 import { forcegraph } from "./components/forcegraph.js";
 
-const crate = await FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 const root = root_entity(crate.nodes);
 const nodes = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
 

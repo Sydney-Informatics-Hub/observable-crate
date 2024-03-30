@@ -11,4 +11,4 @@ to explore the contents and structure of an [RO-Crate](https://www.researchobjec
 
 The source code is available on [GitHub](https://github.com/Sydney-Informatics-Hub/observable-crate/)
 
-Developed by Mike Lynch at the [Sydney Informatics Hub](https://www.sydney.edu.au/research/facilities/sydney-informatics-hub.html)
+Developed by [Mike Lynch](mailto:m.lynch@sydney.edu.au) at the [Sydney Informatics Hub](https://www.sydney.edu.au/research/facilities/sydney-informatics-hub.html)

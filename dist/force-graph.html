@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
-<link rel="modulepreload" href="./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d">
 <link rel="modulepreload" href="./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
@@ -55,17 +55,17 @@
 
 import {define} from "./_observablehq/client.js";
 
-define({id: "fa0a9349", inputs: ["FileAttachment"], outputs: ["root_entity","make_colour_map","forcegraph","crate","root","nodes","colours"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment) => {
-const [{root_entity, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
+define({id: "b39bbd5e", outputs: ["root_entity","current_crate","make_colour_map","forcegraph","crate","root","nodes","colours"], body: async () => {
+const [{root_entity, current_crate, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
 
-const crate = await FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 const root = root_entity(crate.nodes);
 const nodes = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
 
 
 const colours = make_colour_map(crate.types);
 
-return {root_entity,make_colour_map,forcegraph,crate,root,nodes,colours};
+return {root_entity,current_crate,make_colour_map,forcegraph,crate,root,nodes,colours};
 }});
 
 define({id: "dd88943e", inline: true, inputs: ["root","display"], body: async (root,display) => {
@@ -133,16 +133,16 @@ return {show_nodes,show_ids,show_links,svg};
     <li class="observablehq-link"><a href="./">RO-Crate Explorer</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./load.html">Load</a></li>
     <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
     <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
-    <li class="observablehq-link"><a href="./upload.html">Upload</a></li>
     <li class="observablehq-link"><a href="./about.html">About</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
-<div id="cell-fa0a9349" class="observablehq observablehq--block"></div>
+<div id="cell-b39bbd5e" class="observablehq observablehq--block"></div>
 <h2 tabindex="-1"><a class="observablehq-header-anchor" href="#"><span id="cell-dd88943e" class="observablehq--loading"></span></a></h2>
 <p><span id="cell-f96ea595" class="observablehq--loading"></span></p>
 <div id="cell-d7966d98" class="observablehq observablehq--block"></div>
@@ -151,6 +151,6 @@ return {show_nodes,show_ids,show_links,svg};
 <div id="cell-d09d1ed5" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T10:50:51">Mar 29, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T13:53:41">Mar 30, 2024</a>.</div>
 </footer>
 </div>

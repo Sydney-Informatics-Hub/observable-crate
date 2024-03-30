@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
-<link rel="modulepreload" href="./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
@@ -54,10 +54,10 @@
 
 import {define} from "./_observablehq/client.js";
 
-define({id: "e7201e19", inputs: ["FileAttachment","Generators","location","addEventListener","removeEventListener"], outputs: ["root_entity","entity","crate","nodes","nodes_array","root","hash"], files: [{"name":"./data/crate.json","mimeType":"application/json","path":"./_file/data/crate.json"}], body: async (FileAttachment,Generators,location,addEventListener,removeEventListener) => {
-const {root_entity, entity} = await import("./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db");
+define({id: "1c9cd93e", inputs: ["Generators","location","addEventListener","removeEventListener"], outputs: ["root_entity","entity","current_crate","crate","nodes","nodes_array","root","hash"], body: async (Generators,location,addEventListener,removeEventListener) => {
+const {root_entity, entity, current_crate} = await import("./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d");
 
-const crate = await FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 const nodes = crate.nodes;
 
 const nodes_array = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
@@ -71,12 +71,12 @@ let hash = Generators.observe(notify => {
   return () => removeEventListener("hashchange", hashchange);
 });
 
-return {root_entity,entity,crate,nodes,nodes_array,root,hash};
+return {root_entity,entity,current_crate,crate,nodes,nodes_array,root,hash};
 }});
 
-define({id: "d7eec97a", inline: true, inputs: ["root","display"], body: async (root,display) => {
+define({id: "f9918e82", inline: true, inputs: ["root","display"], body: async (root,display) => {
 display(await(
-root.name 
+root ? root.name : 'No RO-Crate loaded'
 ))
 }});
 
@@ -110,13 +110,17 @@ const search = view(Inputs.text({
 return {hash_to_item,node,match_node,search};
 }});
 
-define({id: "cdd01b83", inputs: ["nodes_array","match_node","search","display","entity","nodes","node"], outputs: ["filtered"], body: (nodes_array,match_node,search,display,entity,nodes,node) => {
+define({id: "bb2d09bc", inputs: ["nodes_array","match_node","search","display","entity","nodes","node","html"], outputs: ["filtered"], body: (nodes_array,match_node,search,display,entity,nodes,node,html) => {
 const filtered = nodes_array.filter((n) => match_node(n, search));
 
 if( search ) {
   filtered.map((n) => display(entity(nodes, n)));
 } else {
-  display(entity(nodes, node));
+  if( node ) {
+    display(entity(nodes, node));
+  } else {
+    display(html`<p><a href="load.html">Load an RO-Crate</a></p>`)
+  }
 }
 return {filtered};
 }});
@@ -130,9 +134,9 @@ return {filtered};
     <li class="observablehq-link observablehq-link-active"><a href="./">RO-Crate Explorer</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./load.html">Load</a></li>
     <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
     <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
-    <li class="observablehq-link"><a href="./upload.html">Upload</a></li>
     <li class="observablehq-link"><a href="./about.html">About</a></li>
   </ol>
 </nav>
@@ -145,13 +149,13 @@ ul.relations {
 	overflow:auto;
 }
 </style>
-<div id="cell-e7201e19" class="observablehq observablehq--block"></div>
-<h2 tabindex="-1"><a class="observablehq-header-anchor" href="#"><span id="cell-d7eec97a" class="observablehq--loading"></span></a></h2>
+<div id="cell-1c9cd93e" class="observablehq observablehq--block"></div>
+<h2 tabindex="-1"><a class="observablehq-header-anchor" href="#"><span id="cell-f9918e82" class="observablehq--loading"></span></a></h2>
 <div id="cell-c3ab4890" class="observablehq observablehq--block"></div>
-<div id="cell-cdd01b83" class="observablehq observablehq--block"></div>
+<div id="cell-bb2d09bc" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="next" href="./statistics.html"><span>Statistics</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T10:50:51">Mar 29, 2024</a>.</div>
+<nav><a rel="next" href="./load.html"><span>Load</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T13:53:41">Mar 30, 2024</a>.</div>
 </footer>
 </div>

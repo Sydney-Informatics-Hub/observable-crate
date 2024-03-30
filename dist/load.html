@@ -9,8 +9,7 @@
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
-<link rel="modulepreload" href="./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db">
-<link rel="modulepreload" href="./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f">
+<link rel="modulepreload" href="./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d">
 <link rel="modulepreload" href="./_import/components/loader.js?sha=1f7ed408a96a42087274866babaa428ee8adcbb38e8fd1e4f4c3ce89ddf98b07">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
@@ -58,11 +57,11 @@
 
 import {define} from "./_observablehq/client.js";
 
-define({id: "84927e53", outputs: ["load_crate","nil_crate","root_entity","make_colour_map","forcegraph"], body: async () => {
-const [{load_crate}, {nil_crate, root_entity, make_colour_map}, {forcegraph}] = await Promise.all([import("./_import/components/loader.js?sha=1f7ed408a96a42087274866babaa428ee8adcbb38e8fd1e4f4c3ce89ddf98b07"), import("./_import/components/crate.js?sha=6b8f9bb4a1a0ad91dcc79175f0680ff6f62d6bfe52a8aac59869ac96a51b54db"), import("./_import/components/forcegraph.js?sha=daf50c8174b7089858a97471f8bf4c7c9b91b6b920ae39a9d4be18f41b9f3a0f")]);
+define({id: "7bd9d19d", outputs: ["load_crate","current_crate","root_entity"], body: async () => {
+const [{load_crate}, {current_crate, root_entity}] = await Promise.all([import("./_import/components/loader.js?sha=1f7ed408a96a42087274866babaa428ee8adcbb38e8fd1e4f4c3ce89ddf98b07"), import("./_import/components/crate.js?sha=6a6b051a107ca9ab4df13f0a33769b34d18801cbd35405b79141ad12a145395d")]);
 
 
-return {load_crate,nil_crate,root_entity,make_colour_map,forcegraph};
+return {load_crate,current_crate,root_entity};
 }});
 
 define({id: "3319cc8f", inputs: ["view","Inputs"], outputs: ["cratefile"], body: (view,Inputs) => {
@@ -76,61 +75,22 @@ const cratejson = cratefile.json();
 return {cratejson};
 }});
 
-define({id: "38069d8a", inputs: ["load_crate","cratejson","root_entity","make_colour_map"], outputs: ["crate","root","nodes","colours"], body: (load_crate,cratejson,root_entity,make_colour_map) => {
+define({id: "e2b984e0", inputs: ["load_crate","cratejson","root_entity"], outputs: ["crate","root"], body: (load_crate,cratejson,root_entity) => {
 
 const crate = load_crate(cratejson);
-
 const root = root_entity(crate.nodes);
-const nodes = Object.keys(crate.nodes).map((eid) => crate.nodes[eid]);
 
 
-const colours = make_colour_map(crate.types);
-
-return {crate,root,nodes,colours};
+return {crate,root};
 }});
 
-define({id: "d7966d98", inputs: ["view","Inputs","crate"], outputs: ["use_types"], body: (view,Inputs,crate) => {
-const use_types = view(Inputs.checkbox(crate.types, { 
-  multiple: true, 
-  label: "Entity types",
-  value: crate.types,
-}));
-return {use_types};
-}});
+define({id: "83753c7d", inputs: ["sessionStorage","crate","display","root"], body: (sessionStorage,crate,display,root) => {
+sessionStorage.setItem('ro-crate', JSON.stringify(crate))
+console.log("Wrote crate to storage");
 
-define({id: "4e681039", inputs: ["view","Inputs","crate"], outputs: ["use_rels"], body: (view,Inputs,crate) => {
-const use_rels = view(Inputs.checkbox(crate.relations, {
-  multiple: true,
-  label: "Relationships",
-  value: crate.relations,
-}));
-return {use_rels};
-}});
+display(root.name);
+display(root.description)
 
-define({id: "a0c662a7", inputs: ["view","Inputs","crate"], outputs: ["use_externals"], body: (view,Inputs,crate) => {
-const use_externals = view(Inputs.checkbox(crate.externals, {
-  multiple: true,
-  label: "External ID domains",
-}));
-return {use_externals};
-}});
-
-define({id: "d09d1ed5", inputs: ["nodes","use_types","crate","use_rels","forcegraph","colours","display"], outputs: ["show_nodes","show_ids","show_links","svg"], body: (nodes,use_types,crate,use_rels,forcegraph,colours,display) => {
-const show_nodes = nodes.filter((n) => use_types.includes(n.type[0]));
-const show_ids = show_nodes.map((n) => n.id);
-const show_links = crate.links.filter(
-  (l) => {
-    if( !use_rels.includes(l.property) ) {
-      return false;
-    }
-    return show_ids.includes(l.source) && show_ids.includes(l.target);
-  });
-
-const svg = forcegraph({nodes: show_nodes, links: show_links}, colours);
-
-display(svg.node());
-
-return {show_nodes,show_ids,show_links,svg};
 }});
 
 </script>
@@ -142,28 +102,26 @@ return {show_nodes,show_ids,show_links,svg};
     <li class="observablehq-link"><a href="./">RO-Crate Explorer</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./load.html">Load</a></li>
     <li class="observablehq-link"><a href="./statistics.html">Statistics</a></li>
     <li class="observablehq-link"><a href="./force-graph.html">Graph</a></li>
-    <li class="observablehq-link"><a href="./upload.html">Upload</a></li>
     <li class="observablehq-link"><a href="./about.html">About</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
-<div id="cell-84927e53" class="observablehq observablehq--block"></div>
+<div id="cell-7bd9d19d" class="observablehq observablehq--block"></div>
 <h2 id="ro-crate" tabindex="-1"><a class="observablehq-header-anchor" href="#ro-crate">RO-Crate</a></h2>
-<p>Upload an rocrate-metadata.json file (note that this is very experimental
-and the uploaded ro-crate won't be passed through to the other pages)</p>
+<p>Load an rocrate-metadata.json file: as this is a static site, the crate is
+stored in your browser session and won't persist.</p>
+<p>Note that this is very experimental and will likely fail for files &gt; 5MB.</p>
 <div id="cell-3319cc8f" class="observablehq observablehq--block"></div>
 <div id="cell-d13038d9" class="observablehq observablehq--block"></div>
-<div id="cell-38069d8a" class="observablehq observablehq--block"></div>
-<div id="cell-d7966d98" class="observablehq observablehq--block"></div>
-<div id="cell-4e681039" class="observablehq observablehq--block"></div>
-<div id="cell-a0c662a7" class="observablehq observablehq--block"></div>
-<div id="cell-d09d1ed5" class="observablehq observablehq--block"></div>
+<div id="cell-e2b984e0" class="observablehq observablehq--block"></div>
+<div id="cell-83753c7d" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-29T10:50:51">Mar 29, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-03-30T13:53:41">Mar 30, 2024</a>.</div>
 </footer>
 </div>

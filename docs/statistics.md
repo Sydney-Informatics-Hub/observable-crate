@@ -5,9 +5,9 @@ toc: false
 ## Entities by type
 
 ```js
-import { make_colour_map } from "./components/crate.js";
+import { current_crate, make_colour_map } from "./components/crate.js";
 
-const crate = FileAttachment("./data/crate.json").json();
+const crate = current_crate();
 
 ```
 
