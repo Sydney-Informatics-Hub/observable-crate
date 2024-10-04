@@ -4,7 +4,7 @@ toc: false
 ---
 ## RO-Crate
 
-TODO: fix me with the parquet loader?
+TODO: is this even possible now
 
 
 

@@ -1,18 +1,44 @@
 import {html} from "npm:htl";
 
+
 import * as d3 from "npm:d3";
 
-const crate_db = FileAttachment("./data/crate.db").sqlite();
 
-export function root_entity() {
-//
+
+export async function root_entity(db) {
+	const root = await db.queryRow(`
+SELECT link.target AS id, node.name AS name, node.description AS description
+ 	FROM link
+ 	INNER JOIN node ON link.target = node.crate_id
+ 	WHERE source='ro-crate-metadata.json' AND relation='about'
+`);
+	return root;
 }
 
-export function crate_link(entities, i) {
-	const target = entities[i];
-	const text = target.name || i;
-	return html`<a href="#${i}">${text}</a>`;
+export async function links_from(db, eid) {
+	const links = await db.query(`
+SELECT link.target AS id, link.relation AS relation,
+       node.name AS name, node.description AS description
+	FROM link
+	INNER JOIN node on link.target = node.crate_id
+	where source="${eid}"
+`);
+	return links;
 }
+
+export async function links_to(db, eid) {
+	const links = await db.query(`
+SELECT link.source AS id, link.relation AS relation,
+       node.name AS name, node.description AS description
+	FROM link
+	INNER JOIN node on link.source = node.crate_id
+	where target="${eid}"
+`);
+	return links;
+}
+
+
+
 
 export function entity_links(entities, dir, entity) {
 	return html`<ul>${
@@ -27,6 +53,14 @@ function link_list(entities, links) {
 		${links.map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
 	</ul>`
 }
+
+
+export function crate_link(entities, i) {
+	const target = entities[i];
+	const text = target.name || i;
+	return html`<a href="#${i}">${text}</a>`;
+}
+
 
 export function make_colour_map(types) {
 	const tlist = Array.from(types);
