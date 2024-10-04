@@ -3,9 +3,6 @@ export default {
   title: "RO-Crate Explorer",
   cleanUrls: false,
   pages: [
-    {name: "Load", path: "/load.html"},
-    {name: "Statistics", path: "/statistics.html"},
-    {name: "Graph", path: "/force-graph.html"},
     {name: "About", path: "/about.html"},
   ],
 };

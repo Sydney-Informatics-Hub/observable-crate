@@ -3,30 +3,29 @@ from rocrate.rocrate import ROCrate
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+import sys
+import zipfile
+import io
 
-CRATEDIR = "./docs/data/crates/omaa/"
+CRATEDIR = "./src/data/crates/omaa/"
 
-
-def write_csv(file, headers, items):
-    with open(file, "w") as fh:
-        fh.write(",".join(headers) + "\n")
-        for i in items:
-            try:
-                fh.write(",".join(i) + "\n")
-            except Exception as e:
-                pass
+def write_parquet(df, filename, zfh):
+    buf = pa.BufferOutputStream()
+    table = pa.Table.from_pandas(df)
+    pq.write_table(table, buf, compression="snappy")
+    buf_bytes = buf.getvalue().to_pybytes()
+    zfh.writestr(filename, buf_bytes)
 
 
 def main(cratedir):
     crate = ROCrate(cratedir)
     nodes = []
     links = []
-    print(f"Loading RO-Crate from {cratedir}")
     for e in crate.get_entities():
         ename = e.properties().get("name", None)
         eid = e.properties().get("@id", None)
         if eid is not None:
-            nodes.append((eid, ename, e.type))
+            nodes.append((eid, ename, str(e.type)))
             for p, v in e.properties().items():
                 if type(v) is dict:
                     mid = v.get("@id", None)
@@ -37,8 +36,16 @@ def main(cratedir):
                             links.append((eid, tid, p))
     nodesdf = pd.DataFrame(nodes, columns=["id", "name", "type"])
     linksdf = pd.DataFrame(links, columns=["source", "target", "relation"])
-    print(nodesdf)
-    print(linksdf)
+
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, "w") as zfh:
+        write_parquet(nodesdf, "nodes.parquet", zfh)
+
+    with zipfile.ZipFile(zip_buffer, "a") as zfh:
+        write_parquet(linksdf, "links.parquet", zfh)
+
+    sys.stdout.buffer.write(zip_buffer.getvalue())
 
 if __name__ == "__main__":
     main(CRATEDIR)

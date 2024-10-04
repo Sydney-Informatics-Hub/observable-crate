@@ -2,24 +2,10 @@ import {html} from "npm:htl";
 
 import * as d3 from "npm:d3";
 
-export function nil_crate() {
-	return {
-		nodes: [],
-		links: [],
-		types: [],
-		relations: [],
-		externals: [],
+const crate_db = FileAttachment("./data/crate.db").sqlite();
 
-	}
-}
-
-export function root_entity(entities) {
-	if( 'ro-crate-metadata.json' in entities ) {
-		const root_id = entities['ro-crate-metadata.json']['links_from']['about'][0];
-		return entities[root_id];
-	} else {
-		return null;
-	}
+export function root_entity() {
+//
 }
 
 export function crate_link(entities, i) {
@@ -74,16 +60,3 @@ ${entity_links(nodes, "links_from", node)}
 }
 
 
-export function current_crate() {
-	const current_json = sessionStorage.getItem("ro-crate");
-	if( current_json ) {
-		try {
-			const crate = JSON.parse(current_json);
-			return crate;
-		} catch(e) {
-			console.log("Bad result from sessionStorage")
-			return nil_crate();
-		}
-	}
-	return nil_crate();
-}
