@@ -9,3 +9,7 @@ TODO for Thursday afternoon
 - search on the entity explorer page
 
 
+
+https://observablehq.com/framework/
+
+
