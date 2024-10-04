@@ -4,61 +4,80 @@ import {html} from "npm:htl";
 import * as d3 from "npm:d3";
 
 
+export async function find_entity(db, eid) {
+	return await db.queryRow(`
+SELECT node.crate_id AS id, node.name AS name, node.description AS description
+ 	FROM node
+ 	WHERE node.crate_id = "${eid}"
+`);
+}
+
 
 export async function root_entity(db) {
-	const root = await db.queryRow(`
+	return await db.queryRow(`
 SELECT link.target AS id, node.name AS name, node.description AS description
  	FROM link
  	INNER JOIN node ON link.target = node.crate_id
  	WHERE source='ro-crate-metadata.json' AND relation='about'
 `);
-	return root;
 }
 
 export async function links_from(db, eid) {
-	const links = await db.query(`
+	return await db.query(`
 SELECT link.target AS id, link.relation AS relation,
        node.name AS name, node.description AS description
 	FROM link
 	INNER JOIN node on link.target = node.crate_id
 	where source="${eid}"
 `);
-	return links;
 }
 
 export async function links_to(db, eid) {
-	const links = await db.query(`
+	return await db.query(`
 SELECT link.source AS id, link.relation AS relation,
        node.name AS name, node.description AS description
 	FROM link
 	INNER JOIN node on link.source = node.crate_id
 	where target="${eid}"
 `);
-	return links;
 }
 
 
 
+export async function entity_html(db, node) {
+	const to_this = await links_to(db, node.id);
+	const from_this = await links_from(db, node.id);
 
-export function entity_links(entities, dir, entity) {
-	return html`<ul>${
-		Object.keys(entity[dir]).map((prop) => html`<li>${prop}
-			${link_list(entities, entity[dir][prop])}
-		</li>`)
-	}</ul>`
-} 
+	return html`<div class="card">
+<h2>${node.name || node.id}</h2>
+<p>${node.description || ""}</p>
+</div>
 
-function link_list(entities, links) {
+<div class="grid grid-cols-2">
+<div class="card">
+<p>Links to this entity:</p>
+${link_list(to_this)}
+</div>
+<div class="card">
+<p>Links from this entity:</p>
+${link_list(from_this)}
+</div>
+</div>`;
+}
+
+
+
+function link_list(links) {
 	return html`<ul class="relations">
-		${links.map((i)=>html`<li>${crate_link(entities, i)}</li>`)}
+		${links.map((l)=>html`<li>${crate_link(l)}</li>`)}
 	</ul>`
 }
 
 
-export function crate_link(entities, i) {
-	const target = entities[i];
-	const text = target.name || i;
-	return html`<a href="#${i}">${text}</a>`;
+
+function crate_link(l) {
+	const text = l.name || l.id;
+	return html`<a href="#${l.id}">${text}</a>`;
 }
 
 
@@ -75,22 +94,5 @@ export function make_colour_map(types) {
 
 
 
-export function entity(nodes, node) {
-	return html`<div class="card">
-<h2>${node.name || node.id}</h2>
-<p>${node.description || ""}</p>
-</div>
-
-<div class="grid grid-cols-2">
-<div class="card">
-<p>Links to this entity:</p>
-${entity_links(nodes, "links_to", node)}
-</div>
-<div class="card">
-<p>Links from this entity:</p>
-${entity_links(nodes, "links_from", node)}
-</div>
-</div>`;
-}
 
 
