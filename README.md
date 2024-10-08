@@ -1,57 +1,39 @@
-# RO-Crate Viewer
+# RO-Crate Data Kit
 
-Experimenting with using the [Observable Framework](https://observablehq.com/framework)
-to explore the structure and contents of an [RO-Crate](https://www.researchobject.org/ro-crate/1.1/)
+A toolkit for making stand-alone, performant web version of a research data
+collection packaged as an [RO-Crate](https://www.researchobject.org/ro-crate/1.1/), using the [Observable Framework](https://observablehq.com/framework).
 
+The focus is on humanities collections but this should be general enough
+to work with any valid RO-Crate.
 
-To start the local preview server, run:
+## Quick start
 
-```
-npm run dev
-```
+[FIXME - this needs to include a Python dependency stage]
 
-Then visit <http://localhost:3000> to preview your project.
+1. Copy this repo
+2. Copy your RO-Crate into src/data/ in place of the 'crate' directory
+3. npm install
+4. npm run build
+5. npm run dev
+6. Browse to http://127.0.0.1:3000/ to explore the crate
 
-For more, see <https://observablehq.com/framework/getting-started>.
+## How it works
 
-## Project structure
+![A diagram of this system](docs/design.drawio.png)
 
-A typical Framework project looks like this:
+The data loader script crate.db.py transforms the ro-crate-metadata.json into
+an SQLite database, which allows reasonable performance in the frontend.
 
-```ini
-.
-├─ docs
-│  ├─ components
-│  │  └─ timeline.js           # an importable module
-│  ├─ data
-│  │  ├─ launches.csv.js       # a data loader
-│  │  └─ events.json           # a static data file
-│  ├─ example-dashboard.md     # a page
-│  ├─ example-report.md        # another page
-│  └─ index.md                 # the home page
-├─ .gitignore
-├─ observablehq.config.ts      # the project config file
-├─ package.json
-└─ README.md
-```
+Any file referred to in the ro-crate-metadata.json will be copied from the 
+crate into the dist directory.
 
-**`docs`** - This is the “source root” — where your source files live. Pages go here. Each page is a Markdown file. Observable Framework uses [file-based routing](https://observablehq.com/framework/routing), which means that the name of the file controls where the page is served. You can create as many pages as you like. Use folders to organize your pages.
+Each Markdown file is an Observable page giving a particular view of the crate.
 
-**`docs/index.md`** - This is the home page for your site. You can have as many additional pages as you’d like, but you should always have a home page, too.
+## How to customise
 
-**`docs/data`** - You can put [data loaders](https://observablehq.com/framework/loaders) or static data files anywhere in your source root, but we recommend putting them here.
+Remove the Markdown files for pages you don't need.
 
-**`docs/components`** - You can put shared [JavaScript modules](https://observablehq.com/framework/javascript/imports) anywhere in your source root, but we recommend putting them here. This helps you pull code out of Markdown files and into JavaScript modules, making it easier to reuse code across pages, write tests and run linters, and even share code with vanilla web applications.
+If additional indices are required in the database, you can modify crate.db.py
 
-**`observablehq.config.ts`** - This is the [project configuration](https://observablehq.com/framework/config) file, such as the pages and sections in the sidebar navigation, and the project’s title.
+Instructions for stylesheets etc should go here
 
-## Command reference
-
-| Command           | Description                                              |
-| ----------------- | -------------------------------------------------------- |
-| `npm install`            | Install or reinstall dependencies                        |
-| `npm run dev`        | Start local preview server                               |
-| `npm run build`      | Build your static site, generating `./dist`              |
-| `npm run deploy`     | Deploy your project to Observable                        |
-| `npm run clean`      | Clear the local data loader cache                        |
-| `npm run observable` | Run commands like `observable help`                      |
