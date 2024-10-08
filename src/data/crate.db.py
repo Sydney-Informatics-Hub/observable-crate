@@ -5,7 +5,7 @@ import sys
 import io
 import tempfile
 
-CRATEDIR = "./src/data/crates/omaa/"
+CRATEDIR = "./src/data/crate/"
 
 def get_as_list(entity, prop):
     v = entity.properties().get(prop, None)
