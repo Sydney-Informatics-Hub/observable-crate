@@ -3,6 +3,14 @@ import {html} from "npm:htl";
 
 import * as d3 from "npm:d3";
 
+export async function search(db) {
+	return await db.query(`
+SELECT node.crate_id as id,
+       node.name as name,
+       node.description as description
+FROM node
+`);
+}
 
 export async function find_entity(db, eid) {
 	return await db.queryRow(`
