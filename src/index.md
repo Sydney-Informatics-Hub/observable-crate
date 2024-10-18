@@ -3,7 +3,7 @@ title: Home
 toc: false
 ---
 <style>
-ul.relations {
+ul.properties {
   max-height:100px;
   overflow:auto;
 }
@@ -11,7 +11,7 @@ ul.relations {
 
 ```js
 
-import { root_entity, find_entity, entity_html } from "./components/crate.js";
+import { root_entity_id, find_entity, entity_html } from "./components/crate.js";
 
 const db = FileAttachment("./data/crate.db").sqlite();
 
@@ -28,7 +28,8 @@ let hash = Generators.observe(notify => {
 ```
 
 ```js
-const root = await root_entity(db);
+const root_id = await root_entity_id(db);
+const root = await find_entity(db, root_id);
 
 async function hash_to_item(hash) {
   if( hash ) {
@@ -48,6 +49,7 @@ let node = await hash_to_item(hash);
 
 ```js
 const ehtml = await(entity_html(db, node)); 
+display(node);
 
 display(ehtml);
 
