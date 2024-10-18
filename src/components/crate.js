@@ -3,6 +3,8 @@ import {html} from "npm:htl";
 
 import * as d3 from "npm:d3";
 
+const SUPERSET_RELS = [ "hasPart", "memberOf" ];
+
 export async function search(db) {
 	return await db.query(`
 SELECT node.id as id,
@@ -17,8 +19,8 @@ FROM node
 export async function find_entity(db, eid) {
 	const props = await db.query(`
 SELECT source_id AS id, source_name AS name, property_label as property, target_id as target_id, target_name as target_name, value as value
- 	FROM property
- 	WHERE source_id = "${eid}"
+	FROM property
+	WHERE source_id = "${eid}"
 `);
 	if(! props ) {
 		return False;
@@ -50,7 +52,10 @@ SELECT source_id as id, source_name as name, property_label as property
 		if(! entity.ancestors[relation] ) {
 			entity.ancestors[relation] = [];
 		}
-		entity.ancestors[relation].push(p);
+		entity.ancestors[relation].push({
+			"id": p.id,
+			"value": p.name
+		});
 	}
 	return entity;
 }
@@ -80,15 +85,26 @@ SELECT link.source AS id, link.relation AS relation,
 
 export async function entity_html(db, entity) {
 
-	return html`<div class="card">
+	return html`
+
+<div class="grid grid-cols-1">
+
+<div class="card">
 <h2>${entity.properties.name?.value || entity.id}</h2>
 <p>${entity.properties.description?.value || ""}</p>
+</div>
 
-<p>Properties</p>
+</div>
+
+<div class="grid grid-cols-2">
+
+<div class="card">
 ${relations_html(entity.properties)}
+</div>
 
-<p>Ancestors</p>
-${relations_html(entity.ancestors)}
+<div class="card nav">
+${navigation(entity)}
+</div>
 
 </div>`;
 }
@@ -104,19 +120,21 @@ function relations_html(relations) {
 
 
 function property_html(p, values) {
+	if( values.length === 0 ) {
+		return '';
+	}
 	if( values.length > 1 ) {
 		return html`
-<div>${p}</div>
-<div>
+<p><span class="property">${p}</span>
 	<ul class="properties">
 		${values.map((l)=>html`<li>${value_html(l)}</li>`)}
 	</ul>
-</div>`;
-	} else {
-		return html`
-<div>${p}<div>
-<div>${value_html(values[0])}</div>`;
+</p>`;
 	}
+	return html`
+
+<p><span class="property">${p}</span> ${value_html(values[0])}</p>
+`;
 
 }
 
@@ -136,18 +154,33 @@ function value_link(l) {
 }
 
 
-export function make_colour_map(types) {
-	const tlist = Array.from(types);
-	const cmap = {};
-	for( const i in tlist) {
-		cmap[tlist[i]] = d3.schemeCategory10[i];
+function navigation(entity) {
+	const used = new Set();
+	const parts = [];
+	const references = [];
+	if( entity.ancestors ) {
+		for( const rel of SUPERSET_RELS ) {
+			if( entity.ancestors[rel] ) {
+				entity.ancestors[rel].map((p) => {
+					if( !used.has(p.id) ) {
+						parts.push(p);
+						used.add(p.id);
+					}
+				});
+			}
+		}
+		for( const rel of Object.keys(entity.ancestors) ) {
+			entity.ancestors[rel].map((p) => {
+				if( !used.has(p.id) ) {
+					references.push(p);
+					used.add(p.id);
+				}
+			});
+		}
 	}
-	return (tarray) => {
-		return cmap[tarray[0]]
-	} 
+	return html`
+${property_html("Part of", parts)}
+
+${property_html("Referred to by", references)}
+`;
 }
-
-
-
-
-
