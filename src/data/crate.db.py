@@ -2,8 +2,8 @@
 from rocrate.rocrate import ROCrate
 from argparse import ArgumentParser
 from pathlib import Path
+from sqlite_utils import Database
 import csv
-import sqlite3
 import sys
 import io
 import tempfile
@@ -36,6 +36,7 @@ CREATE TABLE property(
     connect.commit() 
 
 
+
 def get_as_list(v):
     """Ensures that a value is a list"""
     if v is None:
@@ -52,7 +53,7 @@ def get_as_id(v):
     return None
 
 
-def entity_properties(crate, seq, e):
+def entity_properties(crate, e):
     """Returns a generator which yields all of this entity's rows"""
     eid = e.properties().get("@id", None)
     if eid is None:
@@ -63,23 +64,33 @@ def entity_properties(crate, seq, e):
             for v in get_as_list(value):
                 maybe_id = get_as_id(v)
                 if maybe_id is not None:
-                    yield relation_row(crate, seq, eid, ename, key, maybe_id)
+                    yield relation_row(crate, eid, ename, key, maybe_id)
                 else:
-                    yield property_row(seq, eid, ename, key, v)
-                seq += 1
+                    yield property_row(eid, ename, key, v)
 
 
-def relation_row(crate, seq, eid, ename, prop, tid):
+def relation_row(crate, eid, ename, prop, tid):
     target = crate.dereference(tid) 
     if target:
         tname = target.properties().get("name", None)
-        return (seq, eid, ename, "", prop, tid, tname, "", "") 
+        return {
+            "source_id": eid,
+            "source_name": ename,
+            "property_label": prop,
+            "target_id": tid,
+            "target_name": tname
+        }
     else:
-        return (seq, eid, ename, "", prop, "", "", target, "") # FIXME
+        return property_row(eid, ename, prop, target)
 
 
-def property_row(seq, eid, ename, prop, value):
-    return (seq, eid, ename, "", prop, "", "", "", value)
+def property_row(eid, ename, prop, value):
+    return {
+            "source_id": eid,
+            "source_name": ename,
+            "property_label": prop,
+            "value": value
+        }
 
 
 def tocsv(cratedir, csvfile):
@@ -96,21 +107,42 @@ def tocsv(cratedir, csvfile):
 
 def tosqlite(cratedir):
     with tempfile.NamedTemporaryFile() as dbfp:
-        connect = sqlite3.connect(dbfp.name)
-        cursor = connect.cursor()
-        create_tables(connect)
+        db = Database(dbfp.name, recreate=True)
+        properties = db["property"].create({
+            "row_id": str,
+            "source_id": str,
+            "source_name": str,
+            "property_uri": str,
+            "property_label": str,
+            "target_id": str,
+            "target_name": str,
+            "target_url": str,
+            "value": str
+            })
         crate = ROCrate(cratedir)
         seq = 0
+        propList = []
         for e in crate.get_entities():
-            for row in entity_properties(crate, seq, e):
-                cursor.execute(
-                    "INSERT INTO property VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    row
-                )
-                seq += 1 # I hate this
-            connect.commit()
+            for row in entity_properties(crate, e):
+                row["row_id"] = seq
+                seq += 1
+                propList.append(row)
+        properties.insert_all(propList)
         with open(dbfp.name, "rb") as dbfp2:
             sys.stdout.buffer.write(dbfp2.read())
+
+def test(cratedir):
+    crate = ROCrate(cratedir)
+    seq = 0
+    for e in crate.get_entities():
+        for row in entity_properties(crate, e):
+            row["row_id"] = seq
+            seq += 1 
+            print(row)
+
+
+
+
 
 if __name__ == "__main__":
     ap = ArgumentParser("RO-Crate to tables")
@@ -128,7 +160,8 @@ if __name__ == "__main__":
     )
     args = ap.parse_args()
 
-    if args.output:
-        tocsv(args.crate, args.output)
-    else:
-        tosqlite(args.crate)
+    tosqlite(args.crate)
+    # if args.output:
+    #     tocsv(args.crate, args.output)
+    # else:
+    #     
