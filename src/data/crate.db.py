@@ -22,18 +22,18 @@ HEADERS = (
     "value"
     )
 
-def create_tables(connect):
-    cursor = connect.cursor()
-    cursor.execute("CREATE TABLE about(root_id, name, description)") #FIXME
-    cursor.execute("""
-CREATE TABLE property(
-    row_id,
-    source_id, source_name,
-    property_uri, property_label,
-    target_id, target_name, target_url,
-    value)
-""")
-    connect.commit() 
+# def create_tables(connect):
+#     cursor = connect.cursor()
+#     cursor.execute("CREATE TABLE about(root_id, name, description)") #FIXME
+#     cursor.execute("""
+# CREATE TABLE property(
+#     row_id,
+#     source_id, source_name,
+#     property_uri, property_label,
+#     target_id, target_name, target_url,
+#     value)
+# """)
+#     connect.commit() 
 
 
 
@@ -102,7 +102,7 @@ def tocsv(cratedir, csvfile):
         for e in crate.get_entities():
             for row in entity_properties(crate, seq, e):
                 csvwriter.writerow(row)
-                seq += 1 # I hate this
+                seq += 1
 
 
 def tosqlite(cratedir):
@@ -130,15 +130,6 @@ def tosqlite(cratedir):
         properties.insert_all(propList)
         with open(dbfp.name, "rb") as dbfp2:
             sys.stdout.buffer.write(dbfp2.read())
-
-def test(cratedir):
-    crate = ROCrate(cratedir)
-    seq = 0
-    for e in crate.get_entities():
-        for row in entity_properties(crate, e):
-            row["row_id"] = seq
-            seq += 1 
-            print(row)
 
 
 

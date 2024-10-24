@@ -71,16 +71,50 @@ SELECT target_id AS id
 }
 
 
-export async function links_to(db, eid) {
-	return await db.query(`
-SELECT link.source AS id, link.relation AS relation,
-       node.name AS name, node.description AS description
-	FROM link
-	INNER JOIN node on link.source = node.id
-	where target="${eid}"
-`);
+
+function to_feature(point) {
+	return {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [ 
+				point.latitude,
+				point.longitude
+			]
+		}
+	};
 }
 
+
+
+export async function locations(db) {
+	const rows = await db.query(`
+select p1.source_id as id, p1.property_label as property, p1.value as value
+from property p1
+   where p1.source_id IN (
+   	select p2.source_id
+   	FROM property p2
+   	WHERE p2.value = 'GeoCoordinates' AND p2.property_label = '@type'
+   )
+  `);
+// SELECT p1.source_id as id, p1.property_label AS property, p1.value AS value
+//     FROM property p1
+//     LEFT JOIN property p2 ON p2.source_id == p1.source_id
+//         AND (p1.property_label = '@type' AND p1.value = 'GeoCoordinates')
+// `);
+	const points = {};
+	rows.map((r) => {
+		if( ! points[r.id] ) {
+			points[r.id] = {};
+		}
+		points[r.id][r.property] = r.value;
+	});
+	const features = Object.keys(points).map((i) => to_feature(points[i]));
+   	return {
+		"type": "FeatureCollection",
+		"features": features
+   	} 
+}
 
 
 export async function entity_html(db, entity) {

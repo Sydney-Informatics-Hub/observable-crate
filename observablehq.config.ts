@@ -26,7 +26,7 @@ export default {
   title: "RO-Crate Explorer",
   cleanUrls: false,
   pages: [
-    {name: "Visual", path: "/visual.html"},
+    {name: "Map", path: "/map.html"},
     {name: "About", path: "/about.html"},
   ],
   // dynamicPaths: [

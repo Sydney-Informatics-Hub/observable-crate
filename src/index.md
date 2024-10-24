@@ -49,7 +49,6 @@ let node = await hash_to_item(hash);
 
 ```js
 const ehtml = await(entity_html(db, node)); 
-display(node);
 
 display(ehtml);
 
