@@ -81,14 +81,17 @@ function to_feature(point) {
 				point.latitude,
 				point.longitude
 			]
-		}
+		},
+		"properties": {
+			"name": point.name
+		},
 	};
 }
 
 
 
 export async function locations(db) {
-	const rows = await db.query(`
+	const point_rows = await db.query(`
 select p1.source_id as id, p1.property_label as property, p1.value as value
 from property p1
    where p1.source_id IN (
@@ -97,17 +100,23 @@ from property p1
    	WHERE p2.value = 'GeoCoordinates' AND p2.property_label = '@type'
    )
   `);
-// SELECT p1.source_id as id, p1.property_label AS property, p1.value AS value
-//     FROM property p1
-//     LEFT JOIN property p2 ON p2.source_id == p1.source_id
-//         AND (p1.property_label = '@type' AND p1.value = 'GeoCoordinates')
-// `);
+	const name_rows = await db.query(`
+select target_id as id, source_name as name
+    from property
+    where property_label = 'geo'
+  `);
+
 	const points = {};
-	rows.map((r) => {
+	point_rows.map((r) => {
 		if( ! points[r.id] ) {
 			points[r.id] = {};
 		}
 		points[r.id][r.property] = r.value;
+	});
+	name_rows.map((r) => {
+		if( points[r.id] ) {
+			points[r.id]["name"] = r.name;
+		}
 	});
 	const features = Object.keys(points).map((i) => to_feature(points[i]));
    	return {

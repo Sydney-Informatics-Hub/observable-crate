@@ -1,5 +1,5 @@
 ---
-title: Home
+title: Map
 toc: false
 ---
 <style>
@@ -15,7 +15,6 @@ import { locations } from "./components/crate.js";
 
 const db = FileAttachment("./data/crate.db").sqlite();
 
-
 ```
 
 ```js
@@ -26,6 +25,8 @@ display(points);
 const div = display(document.createElement("div"));
 div.style = "height: 400px;";
 
+
+
 const map = L.map(div)
   .setView([-26, 134.2], 3);
 
@@ -34,9 +35,14 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 })
   .addTo(map);
 
-L.geoJSON(points).addTo(map);
+L.geoJSON(points, {
+  onEachFeature: (feature, layer) => {
+      layer.bindPopup(`<b>${feature.properties.name}</b>`);
+  }
+}).addTo(map);
 
 // display(ehtml);
+
 
 ```
 
