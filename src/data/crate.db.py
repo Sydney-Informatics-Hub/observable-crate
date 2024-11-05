@@ -10,32 +10,14 @@ import tempfile
 
 CRATEDIR = "./src/data/crate/"
 
-HEADERS = (
-    "row_id",
-    "source_id",
-    "source_name",
-    "property_uri",
-    "property_label",
-    "target_id",
-    "target_name",
-    "target_url",
-    "value"
-    )
-
-# def create_tables(connect):
-#     cursor = connect.cursor()
-#     cursor.execute("CREATE TABLE about(root_id, name, description)") #FIXME
-#     cursor.execute("""
-# CREATE TABLE property(
-#     row_id,
-#     source_id, source_name,
-#     property_uri, property_label,
-#     target_id, target_name, target_url,
-#     value)
-# """)
-#     connect.commit() 
-
-
+PROPERTIES = {
+    "row_id": str,
+    "source_id": str,
+    "source_name": str,
+    "property_label": str,
+    "target_id": str,
+    "value": str
+}
 
 def get_as_list(v):
     """Ensures that a value is a list"""
@@ -72,13 +54,11 @@ def entity_properties(crate, e):
 def relation_row(crate, eid, ename, prop, tid):
     target = crate.dereference(tid) 
     if target:
-        tname = target.properties().get("name", None)
         return {
             "source_id": eid,
             "source_name": ename,
             "property_label": prop,
             "target_id": tid,
-            "target_name": tname
         }
     else:
         return property_row(eid, ename, prop, target)
@@ -108,17 +88,7 @@ def tocsv(cratedir, csvfile):
 def tosqlite(cratedir):
     with tempfile.NamedTemporaryFile() as dbfp:
         db = Database(dbfp.name, recreate=True)
-        properties = db["property"].create({
-            "row_id": str,
-            "source_id": str,
-            "source_name": str,
-            "property_uri": str,
-            "property_label": str,
-            "target_id": str,
-            "target_name": str,
-            "target_url": str,
-            "value": str
-            })
+        properties = db["property"].create(PROPERTIES)
         crate = ROCrate(cratedir)
         seq = 0
         propList = []
@@ -130,6 +100,15 @@ def tosqlite(cratedir):
         properties.insert_all(propList)
         with open(dbfp.name, "rb") as dbfp2:
             sys.stdout.buffer.write(dbfp2.read())
+
+def test(cratedir):
+    crate = ROCrate(cratedir)
+    seq = 0
+    for e in crate.get_entities():
+        for row in entity_properties(crate, e):
+            row["row_id"] = seq
+            seq += 1 
+            print(row)
 
 
 

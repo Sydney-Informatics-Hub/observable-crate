@@ -18,7 +18,7 @@ FROM node
 
 export async function find_entity(db, eid) {
 	const props = await db.query(`
-SELECT source_id AS id, source_name AS name, property_label as property, target_id as target_id, target_name as target_name, value as value
+SELECT source_id AS id, source_name AS name, property_label as property, target_id as target_id, value as value
 	FROM property
 	WHERE source_id = "${eid}"
 `);
@@ -38,12 +38,10 @@ SELECT source_id as id, source_name as name, property_label as property
 		}
 		const prop = {
 			"property": p.property,
+			"value": p.value,
 		};
 		if( p.target_id ) {
 			prop["id"] = p.target_id;
-			prop["value"] = p.target_name;
-		} else {
-			prop["value"] = p.value;
 		}		
 		entity.properties[relation].push(prop);
 	}
