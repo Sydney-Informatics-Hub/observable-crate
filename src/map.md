@@ -20,8 +20,6 @@ const db = FileAttachment("./data/crate.db").sqlite();
 ```js
 const points = await locations(db);
 
-display(points);
-
 const div = display(document.createElement("div"));
 div.style = "height: 400px;";
 
